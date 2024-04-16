@@ -25,227 +25,225 @@
 //Task 1: Immutability and Pure Functions
 // calculateDiscountedPrice
 function calculateDiscountedPrice(products, discountPercentage) {
-    const discountedProducts = [];
-    for (const product of products) {
-      const discountedPrice = product.price * (1 - discountPercentage / 100);
-      const discountedProduct = {
-        ...product,
-        price: discountedPrice,
-      };
-      discountedProducts.push(discountedProduct);
-    }
-    return discountedProducts;
-  }
-  
-  // calculateTotalPrice
-  function calculateTotalPrice(products) {
-    let totalPrice = 0;
-    for (const product of products) {
-      totalPrice += product.price;
-    }
-    return totalPrice;
-  }
-  
-  // Task 2: Function Composition and Point-Free Style
-  // getFullName
-  function getFullName(person) {
-    return `${person.firstName} ${person.lastName}`;
-  }
-  
-  //  filterUniqueWords
-  function filterUniqueWords(text) {
-    return text
-      .split(/\W+/)
-      .filter((word, index, array) => array.indexOf(word) === index)
-      .sort();
-  }
-  
-  // getAverageGrade
-  function getAverageGrade(students) {
-    const grades = students.flatMap((student) => student.grades);
-    const sum = grades.reduce((total, grade) => total + grade, 0);
-    const average = sum / grades.length;
-    return average;
-  }
-  
-  // Task 3: Closures and Higher-Order Functions
-  // createCounter
-  function createCounter() {
-    let count = 0;
-    return function counter() {
-      count++;
-      return count;
+  const discountedProducts = [];
+  for (const product of products) {
+    const discountedPrice = product.price * (1 - discountPercentage / 100);
+    const discountedProduct = {
+      ...product,
+      price: discountedPrice,
     };
+    discountedProducts.push(discountedProduct);
   }
-  
-  // repeatFunction
-  function repeatFunction(fn, num) {
-    return function () {
-      if (num < 0) {
-        while (true) {
-          fn();
-        }
-      } else {
-        for (let i = 0; i < num; i++) {
-          fn();
-        }
-      }
-    };
+  return discountedProducts;
+}
+
+// calculateTotalPrice
+function calculateTotalPrice(products) {
+  let totalPrice = 0;
+  for (const product of products) {
+    totalPrice += product.price;
   }
-  
-  // Task 4: Recursion and Tail Call Optimization
-  // calculateFactorial
-  function calculateFactorial(n, result = 1) {
-    if (n === 0) {
-      return result;
-    }
-    return calculateFactorial(n - 1, n * result);
-  }
-  
-  // power
-  function power(base, exponent) {
-    if (exponent === 0) {
-      return 1;
-    }
-    return base * power(base, exponent - 1);
-  }
-  
-  // Task 5: Lazy Evaluation and Generators (*do not use yield)
-  // lazyMap
-  function lazyMap(array, mappingFunction) {
-    let index = 0;
-    return {
-      next: function () {
-        if (index >= array.length) {
-          return { done: true };
-        }
-        const result = mappingFunction(array[index]);
-        index++;
-        return { value: result, done: false };
-      },
-    };
-  }
-  
-  // fibonacciGenerator
-  function fibonacciGenerator() {
-      let prev = 0;
-      let curr = 1;
-    
-      return {
-        next: function () {
-          const temp = prev;
-          prev = curr;
-          curr = temp + curr;
-          return { value: prev, done: false };
-        }
-      };
-    }
-    
-  
-  // function fibonacciGenerator() {
-  //   let prev = 0;
-  //   let curr = 1;
-  //   return function () {
-  //     const temp = prev;
-  //     prev = curr;
-  //     curr = temp + curr;
-  //     return prev;
-  //   };
-  // }
-  
-  // Examples
-  console.log("--------------- Discounted Price:");
-  const products = [
-    { name: "Product 1", price: 11 },
-    { name: "Product 2", price: 29 },
-    { name: "Product 3", price: 32 },
-    { name: "Product 4", price: 100 },
-  ];
-  const discountPercentage = 20;
-  const discountedProducts = calculateDiscountedPrice(
-    products,
-    discountPercentage
-  );
-  console.log(discountedProducts); // Output: [{ name: 'Product 1', price: 8.8 }, { name: 'Product 2', price: 23.200000000000003 }, { name: 'Product 3', price: 25.6 }, { name: 'Product 4', price: 80 }]
-  //
-  console.log("--------------- Total Price:");
-  const totalPrice = calculateTotalPrice(products);
-  console.log(`The total of all products is: ${totalPrice}`); // Output: The total of all products is: 172
-  //
-  console.log("--------------- Full name:");
-  const person = {
-    firstName: "Andres",
-    lastName: "Listorti",
+  return totalPrice;
+}
+
+// Task 2: Function Composition and Point-Free Style
+// getFullName
+function getFullName(person) {
+  return `${person.firstName} ${person.lastName}`;
+}
+
+//  filterUniqueWords
+function filterUniqueWords(text) {
+  return text
+    .split(/\W+/)
+    .filter((word, index, array) => array.indexOf(word) === index)
+    .sort();
+}
+
+// getAverageGrade
+function getAverageGrade(students) {
+  const grades = students.flatMap((student) => student.grades);
+  const sum = grades.reduce((total, grade) => total + grade, 0);
+  const average = sum / grades.length;
+  return average;
+}
+
+// Task 3: Closures and Higher-Order Functions
+// createCounter
+function createCounter() {
+  let count = 0;
+  return function counter() {
+    count++;
+    return count;
   };
-  console.log(getFullName(person)); // Output: Andres Listorti
-  //
-  console.log("--------------- Unique Words:");
-  const text = "Text used for testing";
-  const text2 = "Beta Alpha Omega Epsilon";
-  console.log(filterUniqueWords(text)); // Output: [ 'Text', 'for', 'testing', 'used' ]
-  console.log(filterUniqueWords(text2)); // Output: [ 'Alpha', 'Beta', 'Epsilon', 'Omega' ]
-  //
-  console.log("--------------- Average:");
-  const students = [
-    { name: "Andres", grades: [80, 90, 75] },
-    { name: "Alexa", grades: [95, 85, 92] },
-    { name: "Juan", grades: [70, 80, 65] },
-  ];
-  console.log(getAverageGrade(students)); // Output: 81.33333333333333
-  //
-  console.log("--------------- Counter:");
-  const counter1 = createCounter();
-  console.log(counter1()); // Output: 1
-  console.log(counter1()); // Output: 2
-  const counter2 = createCounter();
-  console.log(counter2()); // Output: 1
-  console.log(counter2()); // Output: 2
-  //
-  console.log("--------------- Repeat:");
-  function solvd() {
-    console.log("Solvd");
+}
+
+// repeatFunction
+function repeatFunction(fn, num) {
+  return function () {
+    if (num < 0) {
+      while (true) {
+        fn();
+      }
+    } else {
+      for (let i = 0; i < num; i++) {
+        fn();
+      }
+    }
+  };
+}
+
+// Task 4: Recursion and Tail Call Optimization
+// calculateFactorial
+function calculateFactorial(n, result = 1) {
+  if (n === 0) {
+    return result;
   }
-  const repeatSolvd = repeatFunction(solvd, 3);
-  repeatSolvd(); // Output: Solvd
-  //                        Solvd
-  //                        Solvd
-  // This will keep invoking greet indefinitely until stopped manually.
-  // const repeatSolvdForever = repeatFunction(solvd, -1);
-  // repeatSolvdForever(); // Output: Solvd
-  //                                  Solvd
-  //                                  Solvd
-  //                                  ...
-  //
-  console.log("--------------- Factorial:");
-  console.log(calculateFactorial(5)); // Output: 120
-  console.log(calculateFactorial(11)); // Output: 39916800
-  console.log(calculateFactorial(10)); // Output: 3628800
-  console.log(calculateFactorial(0)); // Output: 1
-  //
-  console.log("--------------- Power:");
-  console.log(power(2, 3)); // Output: 8
-  console.log(power(3, 3)); // Output: 27
-  console.log(power(5, 0)); // Output: 1
-  console.log(power(10, 2)); // Output: 100
-  //
-  console.log("--------------- Lazy Map:");
-  const array = [1, 2, 3, 4, 5];
-  const mappingFunction = (x) => x * 2;
-  const lazyGenerator = lazyMap(array, mappingFunction);
-  console.log(lazyGenerator.next()); // Output: { value: 2, done: false }
-  console.log(lazyGenerator.next()); // Output: { value: 4, done: false }
-  console.log(lazyGenerator.next()); // Output: { value: 6, done: false }
-  console.log(lazyGenerator.next()); // Output: { value: 8, done: false }
-  console.log(lazyGenerator.next()); // Output: { value: 10, done: false }
-  console.log(lazyGenerator.next()); // Output: { done: true }
-  //
-  console.log("--------------- Fibonacci Generator:");
-  const lazyFibonacci = fibonacciGenerator();
-  console.log(lazyFibonacci.next().value); // 1
-  console.log(lazyFibonacci.next().value); // 1
-  console.log(lazyFibonacci.next().value); // 2
-  console.log(lazyFibonacci.next().value); // 3
-  console.log(lazyFibonacci.next().value); // 5
-  console.log(lazyFibonacci.next().value); // 8
-  // And so on, each call to lazyFibonacci() will produce the next Fibonacci number
-  
+  return calculateFactorial(n - 1, n * result);
+}
+
+// power
+function power(base, exponent) {
+  if (exponent === 0) {
+    return 1;
+  }
+  return base * power(base, exponent - 1);
+}
+
+// Task 5: Lazy Evaluation and Generators (*do not use yield)
+// lazyMap
+function lazyMap(array, mappingFunction) {
+  let index = 0;
+  return {
+    next: function () {
+      if (index >= array.length) {
+        return { done: true };
+      }
+      const result = mappingFunction(array[index]);
+      index++;
+      return { value: result, done: false };
+    },
+  };
+}
+
+// fibonacciGenerator
+function fibonacciGenerator() {
+  let prev = 0;
+  let curr = 1;
+
+  return {
+    next: function () {
+      const temp = prev;
+      prev = curr;
+      curr = temp + curr;
+      return { value: prev, done: false };
+    },
+  };
+}
+
+// function fibonacciGenerator() {
+//   let prev = 0;
+//   let curr = 1;
+//   return function () {
+//     const temp = prev;
+//     prev = curr;
+//     curr = temp + curr;
+//     return prev;
+//   };
+// }
+
+// Examples
+console.log("--------------- Discounted Price:");
+const products = [
+  { name: "Product 1", price: 11 },
+  { name: "Product 2", price: 29 },
+  { name: "Product 3", price: 32 },
+  { name: "Product 4", price: 100 },
+];
+const discountPercentage = 20;
+const discountedProducts = calculateDiscountedPrice(
+  products,
+  discountPercentage
+);
+console.log(discountedProducts); // Output: [{ name: 'Product 1', price: 8.8 }, { name: 'Product 2', price: 23.200000000000003 }, { name: 'Product 3', price: 25.6 }, { name: 'Product 4', price: 80 }]
+//
+console.log("--------------- Total Price:");
+const totalPrice = calculateTotalPrice(products);
+console.log(`The total of all products is: ${totalPrice}`); // Output: The total of all products is: 172
+//
+console.log("--------------- Full name:");
+const person = {
+  firstName: "Andres",
+  lastName: "Listorti",
+};
+console.log(getFullName(person)); // Output: Andres Listorti
+//
+console.log("--------------- Unique Words:");
+const text = "Text used for testing";
+const text2 = "Beta Alpha Omega Epsilon";
+console.log(filterUniqueWords(text)); // Output: [ 'Text', 'for', 'testing', 'used' ]
+console.log(filterUniqueWords(text2)); // Output: [ 'Alpha', 'Beta', 'Epsilon', 'Omega' ]
+//
+console.log("--------------- Average:");
+const students = [
+  { name: "Andres", grades: [80, 90, 75] },
+  { name: "Alexa", grades: [95, 85, 92] },
+  { name: "Juan", grades: [70, 80, 65] },
+];
+console.log(getAverageGrade(students)); // Output: 81.33333333333333
+//
+console.log("--------------- Counter:");
+const counter1 = createCounter();
+console.log(counter1()); // Output: 1
+console.log(counter1()); // Output: 2
+const counter2 = createCounter();
+console.log(counter2()); // Output: 1
+console.log(counter2()); // Output: 2
+//
+console.log("--------------- Repeat:");
+function solvd() {
+  console.log("Solvd");
+}
+const repeatSolvd = repeatFunction(solvd, 3);
+repeatSolvd(); // Output: Solvd
+//                        Solvd
+//                        Solvd
+// This will keep invoking greet indefinitely until stopped manually.
+// const repeatSolvdForever = repeatFunction(solvd, -1);
+// repeatSolvdForever(); // Output: Solvd
+//                                  Solvd
+//                                  Solvd
+//                                  ...
+//
+console.log("--------------- Factorial:");
+console.log(calculateFactorial(5)); // Output: 120
+console.log(calculateFactorial(11)); // Output: 39916800
+console.log(calculateFactorial(10)); // Output: 3628800
+console.log(calculateFactorial(0)); // Output: 1
+//
+console.log("--------------- Power:");
+console.log(power(2, 3)); // Output: 8
+console.log(power(3, 3)); // Output: 27
+console.log(power(5, 0)); // Output: 1
+console.log(power(10, 2)); // Output: 100
+//
+console.log("--------------- Lazy Map:");
+const array = [1, 2, 3, 4, 5];
+const mappingFunction = (x) => x * 2;
+const lazyGenerator = lazyMap(array, mappingFunction);
+console.log(lazyGenerator.next()); // Output: { value: 2, done: false }
+console.log(lazyGenerator.next()); // Output: { value: 4, done: false }
+console.log(lazyGenerator.next()); // Output: { value: 6, done: false }
+console.log(lazyGenerator.next()); // Output: { value: 8, done: false }
+console.log(lazyGenerator.next()); // Output: { value: 10, done: false }
+console.log(lazyGenerator.next()); // Output: { done: true }
+//
+console.log("--------------- Fibonacci Generator:");
+const lazyFibonacci = fibonacciGenerator();
+console.log(lazyFibonacci.next().value); // 1
+console.log(lazyFibonacci.next().value); // 1
+console.log(lazyFibonacci.next().value); // 2
+console.log(lazyFibonacci.next().value); // 3
+console.log(lazyFibonacci.next().value); // 5
+console.log(lazyFibonacci.next().value); // 8
+// And so on, each call to lazyFibonacci() will produce the next Fibonacci number
