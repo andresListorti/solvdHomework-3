@@ -55,6 +55,7 @@ function getFullName(person) {
 //  filterUniqueWords
 function filterUniqueWords(text) {
   return text
+    .toLowerCase()
     .split(/\W+/)
     .filter((word, index, array) => array.indexOf(word) === index)
     .sort();
@@ -62,12 +63,14 @@ function filterUniqueWords(text) {
 
 // getAverageGrade
 function getAverageGrade(students) {
-  const grades = students.flatMap((student) => student.grades);
-  const sum = grades.reduce((total, grade) => total + grade, 0);
-  const average = sum / grades.length;
-  return average;
-}
-
+    const averages = students.map((student) => {
+      const sum = student.grades.reduce((total, grade) => total + grade, 0);
+      const average = sum / student.grades.length;
+      return { name: student.name, average };
+    });
+    return averages;
+  }
+  
 // Task 3: Closures and Higher-Order Functions
 // createCounter
 function createCounter() {
@@ -130,7 +133,6 @@ function lazyMap(array, mappingFunction) {
 function fibonacciGenerator() {
   let prev = 0;
   let curr = 1;
-
   return {
     next: function () {
       const temp = prev;
@@ -140,17 +142,6 @@ function fibonacciGenerator() {
     },
   };
 }
-
-// function fibonacciGenerator() {
-//   let prev = 0;
-//   let curr = 1;
-//   return function () {
-//     const temp = prev;
-//     prev = curr;
-//     curr = temp + curr;
-//     return prev;
-//   };
-// }
 
 // Examples
 console.log("--------------- Discounted Price:");
@@ -180,17 +171,24 @@ console.log(getFullName(person)); // Output: Andres Listorti
 //
 console.log("--------------- Unique Words:");
 const text = "Text used for testing";
-const text2 = "Beta Alpha Omega Epsilon";
-console.log(filterUniqueWords(text)); // Output: [ 'Text', 'for', 'testing', 'used' ]
-console.log(filterUniqueWords(text2)); // Output: [ 'Alpha', 'Beta', 'Epsilon', 'Omega' ]
+const text2 = "Beta Alpha Omega Epsilon beta";
+const text3 = "Beta alpha epsilon Alpha Omega Epsilon beta";
+console.log(filterUniqueWords(text)); // Output: [ 'for', 'testing', 'text', 'used' ]
+console.log(filterUniqueWords(text2)); // Output: [ 'alpha', 'beta', 'epsilon', 'omega' ]
+console.log(filterUniqueWords(text3)); // Output: [ 'alpha', 'beta', 'epsilon', 'omega' ]
+
 //
-console.log("--------------- Average:");
+console.log("--------------- Average for every student:");
 const students = [
   { name: "Andres", grades: [80, 90, 75] },
   { name: "Alexa", grades: [95, 85, 92] },
   { name: "Juan", grades: [70, 80, 65] },
 ];
-console.log(getAverageGrade(students)); // Output: 81.33333333333333
+console.log(getAverageGrade(students)); /* [
+    { name: 'Andres', average: 81.66666666666667 },
+    { name: 'Alexa', average: 90.66666666666667 },
+    { name: 'Juan', average: 71.66666666666667 }
+  ] */
 //
 console.log("--------------- Counter:");
 const counter1 = createCounter();
